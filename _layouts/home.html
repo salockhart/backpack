@@ -7,14 +7,26 @@ layout: default
     <ul class="post-list">
         {%- for post in site.posts -%}
         <li>
-            {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-            <span class="post-meta">{{ post.date | date: date_format }}</span>
+            <span class="post-meta">
+                <time class="dt-published" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">
+                    {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+                    {{ post.date | date: date_format }}
+                </time>
+                {%- if post.author -%} •
+                <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+                    <span class="p-author h-card" itemprop="name">{{ post.author }}</span>
+                </span>
+                {%- endif -%}
+            </span>
+
             <h3>
                 <a class="post-link" href="{{ post.url | relative_url }}">
                     {{ post.title | escape }}
                 </a>
             </h3>
-            {%- if site.show_excerpts -%} {{ post.excerpt }} {%- endif -%}
+
+            <img class="post-image" src="{{ post.image | relative_url }}" />
+            {{ post.content }}
         </li>
         {%- endfor -%}
     </ul>

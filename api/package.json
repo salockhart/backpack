@@ -1,0 +1,14 @@
+{
+  "name": "backpack-api",
+  "version": "1.0.0",
+  "description": "upload api for backpack",
+  "main": "app.js",
+  "author": "Alex Lockhart",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  }
+}

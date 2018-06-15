@@ -1,6 +1,19 @@
 let fs = require('fs');
 let path = require('path');
 let express = require('express');
+let multer = require('multer');
+
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'assets/img/')
+    },
+    filename: function (req, file, cb) {
+        console.dir(file);
+        cb(null, fileToName(req, file));
+    }
+  })
+  
+let upload = multer({ storage: storage })
 
 const app = express();
 
@@ -29,10 +42,7 @@ image: ${image}
 ${content}\n\
 `;
 
-app.post('/', (req, res) => {
-    console.dir(req.body);
-
-    let date = new Date(req.body.date);
+let dateToStamp = (date) => {
     let year = date.getFullYear();
     let month = date.getMonth() + 1 + "";
     if (month.length < 2) {
@@ -43,8 +53,26 @@ app.post('/', (req, res) => {
         day = "0" + day;
     }
 
-    let filename = `_posts/${year}-${month}-${day}-test.md`;
-    fs.writeFile(filename, template(req.body.author, 'img.png', req.body.content));
+    return {
+        year,
+        month,
+        day,
+    };
+};
+
+let fileToName = (req, file) => {
+    let date = dateToStamp(new Date(req.body.date));
+    return `${date.year}-${date.month}-${date.day}-${req.body.title}${path.extname(file.originalname)}`;
+};
+
+app.post('/', upload.fields([{ name: 'image', maxCount: 1 }]), (req, res) => {
+    console.dir(req.body);
+    console.dir(req.files);
+
+    let date = dateToStamp(new Date(req.body.date));
+
+    let filename = `_posts/${date.year}-${date.month}-${date.day}-${req.body.title}.md`;
+    fs.writeFile(filename, template(req.body.author, req.files.image[0].filename, req.body.content));
 
     res.sendFile(path.resolve(filename));
 });

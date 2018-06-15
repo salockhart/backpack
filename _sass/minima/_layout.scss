@@ -198,6 +198,20 @@
   margin: 20px;
   border: 20px solid white;
   box-shadow: 0 0 20px #aaa;
+
+  max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit} * 2) - 80px);
+  max-width:         calc(#{$content-width} - (#{$spacing-unit} * 2) - 80px);
+
+  max-height: -webkit-calc(#{$content-width} - (#{$spacing-unit} * 2) - 80px);
+  max-height:         calc(#{$content-width} - (#{$spacing-unit} * 2) - 80px);
+  
+  @include media-query($on-laptop) {
+    max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}) - 80px);
+    max-width:         calc(#{$content-width} - (#{$spacing-unit}) - 80px);
+
+    max-height: -webkit-calc(#{$content-width} - (#{$spacing-unit}) - 80px);
+    max-height:         calc(#{$content-width} - (#{$spacing-unit}) - 80px);
+  }
 }
 
 

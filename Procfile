@@ -1,1 +1,1 @@
-web: node api/app.js
+web: bash heroku_setup.sh

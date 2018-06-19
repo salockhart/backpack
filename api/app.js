@@ -66,14 +66,18 @@ app.post('/', upload.fields([{ name: 'image', maxCount: 1 }]), (req, res) => {
 
     let filename = getFileName(req.body.date, req.body.title);
     if (filename.length === 0) {
-        res.sendStatus(400);
+        return res.sendStatus(400);
     }
     let path = `_posts/${filename}.md`;
     let post = template(req.body.author, req.files.image[0].filename, req.body.content);
-    fs.writeFile(path, post);
+    fs.writeFile(path, post, (err) => {
+        if (err) {
+            return res.sendStatus(500);
+        }
 
-    exec(`git add _posts assets/img && git commit -m "${filename}" && git push`, (err, stdout, stderr) => {
-        res.sendStatus(200);
+        exec(`git add _posts assets/img && git commit -m "${filename}" && git push`, (err, stdout, stderr) => {
+            res.sendStatus(200);
+        });
     });
 });
 

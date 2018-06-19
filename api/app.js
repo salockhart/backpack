@@ -72,10 +72,16 @@ app.post('/', upload.fields([{ name: 'image', maxCount: 1 }]), (req, res) => {
     let post = template(req.body.author, req.files.image[0].filename, req.body.content);
     fs.writeFile(path, post, (err) => {
         if (err) {
+            console.error(`Error saving file: ${err}`);
             return res.sendStatus(500);
         }
 
         exec(`git add _posts assets/img && git commit -m "${filename}" && git push`, (err, stdout, stderr) => {
+            console.log(stdout);
+            if (err) {
+                console.error(`Error saving file: ${err} ${stderr}`);
+                return res.sendStatus(500);
+            }
             res.sendStatus(200);
         });
     });

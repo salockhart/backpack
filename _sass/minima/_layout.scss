@@ -194,6 +194,11 @@
   @include relative-font-size(1.5);
 }
 
+.post-image-container {
+  display: grid;
+  justify-content: center;
+}
+
 .post-image {
   margin: 20px;
   border: 20px solid white;
@@ -235,6 +240,10 @@
 
 .post-content {
   margin-bottom: $spacing-unit;
+
+  p {
+    text-align: center;
+  }
 
   h2 {
     @include relative-font-size(2);

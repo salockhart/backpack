@@ -18,7 +18,9 @@ layout: default
         </p>
     </header>
 
-    <img class="post-image" src="{{ page.image | relative_url }}" />
+    <div class="post-image-container">
+        <img class="post-image" src="{{ page.image | relative_url }}" />
+    </div>
 
     <div class="post-content e-content" itemprop="articleBody">
         {{ content }}

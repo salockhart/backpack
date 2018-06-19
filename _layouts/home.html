@@ -25,8 +25,15 @@ layout: default
                 </a>
             </h3>
 
-            <img class="post-image" src="{{ post.image | relative_url }}" />
-            {{ post.content }}
+            <div class="post-image-container">
+                <a class="post-link" href="{{ post.url | relative_url }}">
+                    <img class="post-image" src="{{ post.image | relative_url }}" />
+                </a>
+            </div>
+
+            <div class="post-content">
+                {{ post.content }}
+            </div>
         </li>
         {%- endfor -%}
     </ul>

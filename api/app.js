@@ -65,6 +65,10 @@ let fileToName = (req, file) => {
     return `${date.year}-${date.month}-${date.day}-${req.body.title}${path.extname(file.originalname)}`;
 };
 
+app.get('/', (req, res) => {
+    return res.send('Hello World');
+});
+
 app.post('/', upload.fields([{ name: 'image', maxCount: 1 }]), (req, res) => {
     console.dir(req.body);
     console.dir(req.files);

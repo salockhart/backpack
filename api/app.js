@@ -4,7 +4,6 @@ let express = require('express');
 let multer = require('multer');
 let { exec } = require('child_process');
 let sanitize = require('sanitize-filename');
-let bcrypt = require('bcrypt');
 let jwt = require('jsonwebtoken');
 let sharp = require('sharp');
 
@@ -37,16 +36,6 @@ let upload = multer({ storage: storage })
 
 app.get('/', (req, res) => {
     return res.send('Hello World');
-});
-
-app.post('/hash', upload.fields([]), (req, res) => {
-    console.log(`Hashing with ${JSON.stringify(req.body)}`);
-    bcrypt.hash(req.body.password, 10, function(err, hash) {
-        if (err) {
-            return console.error(err);
-        }
-        res.send(`${req.body.username}:${hash}`);
-    });
 });
 
 let createJWTToken = (user) => {

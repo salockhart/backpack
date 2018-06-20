@@ -48,3 +48,8 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - api/
+  - Procfile
+  - heroku_setup.sh
+  - package.json
+  - yarn.lock
+  - LICENSE

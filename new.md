@@ -13,7 +13,7 @@ layout: default
     <input required type="text" name="author" /><br /><br />
     <input required type="file" accept="image/*" name="image"><br />
     <textarea name="content" cols="50" rows="10"></textarea><br /><br />
-    <input type="submit" value="Login" />
+    <input type="submit" value="Submit" />
 </form>
 
 <script>

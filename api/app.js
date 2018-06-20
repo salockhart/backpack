@@ -39,6 +39,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/hash', upload.fields([]), (req, res) => {
+    console.log(`Hashing with ${JSON.stringify(req.body)}`);
     bcrypt.hash(req.body.password, 10, function(err, hash) {
         if (err) {
             return console.error(err);
@@ -48,6 +49,7 @@ app.post('/hash', upload.fields([]), (req, res) => {
 });
 
 app.post('/login', upload.fields([]), (req, res) => {
+    console.log(`Logging in with ${JSON.stringify(req.body)}`);
     let users = process.env.USERS.split(',').map(user => ({ username: user.split(':')[0], hash: user.split(':')[1] }));
     Promise.all(users.map(user => bcrypt.compare(req.body.password, user.hash)))
         .then(loggedIn => users.map((user, idx) => Object.assign({}, user, { loggedIn: loggedIn[idx] })))
@@ -91,6 +93,7 @@ let getFileName = (date, title) => {
 };
 
 app.post('/', upload.fields([{ name: 'image', maxCount: 1 }]), (req, res) => {
+    console.log(`Creating new post with ${JSON.stringify(req.body)}`);
     let token = req.headers.authorization;
 
     if (!token) {

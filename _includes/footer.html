@@ -4,7 +4,7 @@
     <div class="wrapper">
 
         <div class="footer-col-wrapper">
-        {% for author in site.authors %}
+            {% for author in site.authors %}
             <div class="footer-col">
                 <ul class="contact-list">
                     <li class="p-name">
@@ -26,11 +26,16 @@
                     {%- if author.rss -%}<li><a href="{{ 'feed.xml' | relative_url }}"><svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use></svg> <span>{{ author.rss | escape }}</span></a></li>{%- endif -%}
                 </ul>
             </div>
-        {% endfor %}
+            {% endfor %}
 
-        <div class="footer-col footer-col-3">
-            <p>{{- site.description | escape -}}</p>
+            <div class="footer-col footer-col-3">
+                <p>{{- site.description | escape -}}</p>
+            </div>
         </div>
+
+        <div class="footer-bottom-wrapper">
+            <p>Made with ❤️ by Alex Lockhart</p>
+            <p><a href="/backpack/login">Login</a><a href="/backpack/new">New Post</a></p>
         </div>
 
     </div>

@@ -157,6 +157,18 @@
   }
 }
 
+.footer-bottom-wrapper {
+  @include relative-font-size(0.75);
+  color: $grey-color;
+  text-align: center;
+  @extend %clearfix;
+
+  a {
+    margin-left: $spacing-unit / 2;
+    margin-right: $spacing-unit / 2;
+  }
+}
+
 
 
 /**

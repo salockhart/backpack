@@ -229,6 +229,14 @@
     max-height: -webkit-calc(#{$content-width} - (#{$spacing-unit}) - 80px);
     max-height:         calc(#{$content-width} - (#{$spacing-unit}) - 80px);
   }
+  
+  @include media-query($on-palm) {
+    max-width: -webkit-calc(100vw - 80px);
+    max-width:         calc(100vw - 80px);
+
+    max-height: -webkit-calc(100vw - 80px);
+    max-height:         calc(100vw - 80px);
+  }
 }
 
 

@@ -4,6 +4,8 @@ let express = require('express');
 let multer = require('multer');
 let { exec } = require('child_process');
 let sanitize = require('sanitize-filename');
+let bcrypt = require('bcrypt');
+let jwt = require('jsonwebtoken');
 
 const app = express();
 
@@ -21,8 +23,47 @@ app.use((req, res, next) => {
   next();
 });
 
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'assets/img/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, `${getFileName(req.body.date, req.body.title)}${path.extname(file.originalname)}`);
+    }
+})
+  
+let upload = multer({ storage: storage })
+
 app.get('/', (req, res) => {
     return res.send('Hello World');
+});
+
+app.post('/hash', upload.fields([]), (req, res) => {
+    bcrypt.hash(req.body.password, 10, function(err, hash) {
+        if (err) {
+            return console.error(err);
+        }
+        res.send(`${req.body.username}:${hash}`);
+    });
+});
+
+app.post('/login', upload.fields([]), (req, res) => {
+    let users = process.env.USERS.split(',').map(user => ({ username: user.split(':')[0], hash: user.split(':')[1] }));
+    Promise.all(users.map(user => bcrypt.compare(req.body.password, user.hash)))
+        .then(loggedIn => users.map((user, idx) => Object.assign({}, user, { loggedIn: loggedIn[idx] })))
+        .then(users => users.find(user => user.loggedIn))
+        .then(user => {
+            if (!user) {
+                return res.sendStatus(400);
+            }
+            jwt.sign({ username: user.username }, process.env.JWT_SECRET, (signErr, token) => {
+                if (signErr) {
+                    console.error(signErr);
+                    return res.sendStatus(500);
+                }
+                return res.send(token);
+            });
+        });
 });
 
 let template = (author, image, content) => `\
@@ -49,40 +90,38 @@ let getFileName = (date, title) => {
     return sanitize(`${year}-${month}-${day}-${title}`.toLowerCase().replace(/ /g, '-'));
 };
 
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'assets/img/')
-    },
-    filename: function (req, file, cb) {
-        console.dir(file);
-        cb(null, `${getFileName(req.body.date, req.body.title)}${path.extname(file.originalname)}`);
-    }
-})
-  
-let upload = multer({ storage: storage })
 app.post('/', upload.fields([{ name: 'image', maxCount: 1 }]), (req, res) => {
-    console.dir(req.body);
-    console.dir(req.files);
+    let token = req.headers.authorization;
 
-    let filename = getFileName(req.body.date, req.body.title);
-    if (filename.length === 0) {
+    if (!token) {
         return res.sendStatus(400);
     }
-    let path = `_posts/${filename}.md`;
-    let post = template(req.body.author, req.files.image[0].filename, req.body.content);
-    fs.writeFile(path, post, (err) => {
-        if (err) {
-            console.error(`Error saving file: ${err}`);
-            return res.sendStatus(500);
-        }
 
-        exec(`git add _posts assets/img && git commit -m "${filename}" && git push`, (err, stdout, stderr) => {
-            console.log(stdout);
+    jwt.verify(token, process.env.JWT_SECRET, (verifyErr, decodedToken) => {
+        if (verifyErr) {
+            console.error(verifyErr);
+            return res.sendStatus(400);
+        }
+    
+        let filename = getFileName(req.body.date, req.body.title);
+        if (filename.length === 0) {
+            return res.sendStatus(400);
+        }
+        let path = `_posts/${filename}.md`;
+        let post = template(req.body.author, req.files.image[0].filename, req.body.content);
+        fs.writeFile(path, post, (err) => {
             if (err) {
-                console.error(`Error saving file: ${err} ${stderr}`);
+                console.error(`Error saving file: ${err}`);
                 return res.sendStatus(500);
             }
-            res.sendStatus(200);
+
+            exec(`git add _posts assets/img && git commit -m "${filename}" && git push`, (err, stdout, stderr) => {
+                if (err) {
+                    console.error(`Error saving file: ${err} ${stderr}`);
+                    return res.sendStatus(500);
+                }
+                res.sendStatus(200);
+            });
         });
     });
 });

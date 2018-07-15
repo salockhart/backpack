@@ -14,7 +14,7 @@
   @include relative-font-size(1.625);
   font-weight: 300;
   line-height: $base-line-height * $base-font-size * 2.25;
-  letter-spacing: -1px;
+  letter-spacing: 5px;
   margin-bottom: 0;
   float: left;
 
@@ -22,6 +22,14 @@
   &:visited {
     color: $grey-color-dark;
   }
+}
+
+.site-description {
+  @include relative-font-size(0.9375);
+  color: $grey-color;
+  float: right;
+  line-height: $base-line-height * $base-font-size * 2.25;
+  margin-bottom: 0;
 }
 
 .site-nav {
@@ -108,6 +116,10 @@
 .site-footer {
   border-top: 1px solid $grey-color-light;
   padding: $spacing-unit 0;
+
+  .love {
+    color: red;
+  }
 }
 
 .footer-heading {
@@ -132,8 +144,9 @@
   float: left;
   margin-bottom: $spacing-unit / 2;
   padding-left: $spacing-unit / 2;
-  width: -webkit-calc(33.33% - (#{$spacing-unit} / 2));
-  width:         calc(33.33% - (#{$spacing-unit} / 2));
+  text-align: center;
+  width: -webkit-calc(50% - (#{$spacing-unit} / 2));
+  width:         calc(50% - (#{$spacing-unit} / 2));
 }
 
 @include media-query($on-laptop) {
@@ -163,13 +176,13 @@
   text-align: center;
   @extend %clearfix;
 
-  a {
-    margin-left: $spacing-unit / 2;
-    margin-right: $spacing-unit / 2;
+  .footer-links {
+    a {
+      margin-left: $spacing-unit / 2;
+      margin-right: $spacing-unit / 2;
+    }
   }
 }
-
-
 
 /**
  * Page content

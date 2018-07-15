@@ -6,6 +6,7 @@ let { exec } = require('child_process');
 let sanitize = require('sanitize-filename');
 let jwt = require('jsonwebtoken');
 let sharp = require('sharp');
+let bcrypt = require('bcrypt');
 
 const app = express();
 

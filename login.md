@@ -31,7 +31,7 @@ $(function () {
             },
             success: function(token) {
                 localStorage.setItem('token', token);
-                window.location.href = "/backpack/new";
+                window.location.href = "/new";
             }
         });
     });

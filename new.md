@@ -23,7 +23,7 @@ $(function () {
 
     const token = localStorage.getItem('token');
     if (!token) {
-        window.location.href = "/backpack/login";
+        window.location.href = "/login";
         return
     }
 
@@ -45,7 +45,7 @@ $(function () {
             },
             success: function(token){
                 window.setTimeout(function() {
-                    window.location.href = "/backpack/"
+                    window.location.href = "/"
                 }, 5000);
                 alert('Success! Your post should appear in the next couple of minutes.');
             }

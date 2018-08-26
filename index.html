@@ -1,11 +1,14 @@
 ---
+# You don't need to edit this file, it's empty on purpose.
+# Edit theme's home layout instead if you wanna make some changes
+# See: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 layout: default
 ---
 
 <div class="home">
-    {%- if site.posts.size > 0 -%}
+    {%- if paginator.posts.size > 0 -%}
     <ul class="post-list">
-        {%- for post in site.posts -%}
+        {%- for post in paginator.posts -%}
         <li>
             <span class="post-meta">
                 <time class="dt-published" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">
@@ -37,6 +40,18 @@ layout: default
         </li>
         {%- endfor -%}
     </ul>
+    <div class="page-btn-container">
+        {%- if paginator.previous_page_path -%}
+        <a class="page-btn-left" href="{{ paginator.previous_page_path }}">
+            Previous Page
+        </a>
+        {%- endif -%}
+        {%- if paginator.next_page_path -%}
+        <a class="page-btn-right" href="{{ paginator.next_page_path }}">
+            Next Page
+        </a>
+        {%- endif -%}
+    </div>
     {%- endif -%}
 
 </div>

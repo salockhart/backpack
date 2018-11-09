@@ -16,7 +16,7 @@
 title: 🇨🇦✈️🇬🇧
 email: salexlockhart@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  A daily photo blog of living in London, UK.
+  A photo blog of living in London, UK.
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://london.alexlockhart.ca" # the base hostname & protocol for your site, e.g. http://example.com
 

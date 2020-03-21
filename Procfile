@@ -1,1 +1,0 @@
-web: bash heroku_setup.sh

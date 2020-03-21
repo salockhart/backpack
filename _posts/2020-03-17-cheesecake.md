@@ -4,4 +4,4 @@ author: Alex
 image: assets/img/IMG_2251.jpg
 ---
 
-(and it’s dairy free!)
+(and it’s homemade and dairy free!)
